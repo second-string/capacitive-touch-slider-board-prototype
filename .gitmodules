@@ -1,0 +1,3 @@
+[submodule "slider-board_rev_1_0/bringup_firmware/components/esp_dmx"]
+	path = slider-board_rev_1_0/bringup_firmware/components/esp_dmx
+	url = git@github.com:someweisguy/esp_dmx.git

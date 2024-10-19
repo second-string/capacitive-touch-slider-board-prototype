@@ -1,0 +1,30 @@
+(version 1)
+
+# (rule standard_disallow
+# (condition "A.Type == 'Pad' || B.Type == 'Pad'")
+# (constraint disallow buried_via footprint graphic hole micro_via pad track via zone))
+
+# (rule allow_slider_pads
+# (condition "A.memberOfGroup('slider_pads') || B.memberOfGroup('slider_pads')")
+# (constraint disallow buried_via hole micro_via track via))
+
+# (rule allow_slider_footprint
+# (condition "A.Reference == 'P8'")
+# (constraint disallow buried_via hole micro_via track via))
+
+# For the sliders that have non-net polygons, we must override the clearance between the polygon and
+# the resistor pads to 0 instead of relying on polygon_to_pad_slider_clearance which handles the
+# clearance between the polygon and the other slider pad
+(rule polygon_to_pad_slider_clearance
+(condition "A.memberOfGroup('slider_polygons') || B.memberOfGroup('slider_polygons')")
+(constraint clearance (min -1mm)))
+
+# The pads are too tight to the polygons in some of the sliders, drop clearance to allow a smaller non-zero gap
+(rule polygon_to_pad_slider_clearance
+(condition "A.memberOfGroup('slider_pads') || B.memberOfGroup('slider_pads')")
+(constraint clearance (min 0.05mm)))
+
+# Corner pads of the package are slightly too tight
+(rule smaller_pad_clearance
+(condition "A.memberOfGroup('corner_pads') || B.memberOfGroup('corner_pads')")
+(constraint clearance (min 0.15mm)))
